@@ -6,9 +6,9 @@
 # end                              # end
 
 def can_be_instantiated_and_then_saved
-  movie = __
+  movie = Movie.new
   movie.title = "This is a title."
-  __
+  movie.save
 end
 
 def can_be_created_with_a_hash_of_attributes
@@ -19,57 +19,56 @@ def can_be_created_with_a_hash_of_attributes
       lead: "Paul Newman",
       in_theaters: false
   }
-  movie = __
+  movie = Movie.create(attributes)
 end
 
 def can_be_created_in_a_block
   Movie.create do |m|
-    __
+    m.title = "Movie"
   end
 end
 
 def can_get_the_first_item_in_the_database
-  __
+  Movie.all.first.title
 end
 
 def can_get_the_last_item_in_the_database
-  __
+  Movie.all.last.title
 end
 
 def can_get_size_of_the_database
-  __
+  Movie.all.size
 end
 
 def can_find_the_first_item_from_the_database_using_id
-  __
+  Movie.find(1).title
 end
 
 def can_find_by_different_attributes
   # title == "Title"
-  # release_date == 2000, 
+  # release_date == 2000,
   # director == "Me"
-  __
+  Movie.where(title: "Title").take
 end
 
 def can_find_using_where_clause_and_be_sorted
-  # For this test return all movies released after 2002 and ordered by 
+  # For this test return all movies released after 2002 and ordered by
   # release date descending
-  __
+  Movie.where("release_date > 2002").order(release_date: :desc)
 end
 
 def can_be_found_updated_and_saved
   # Updtate the title "Awesome Flick" to "Even Awesomer Flick"
-  Movie.create(title: "Awesome Flick")
-  __
-  __
-  __
+  m = Movie.create(title: "Awesome Flick")
+  m.title = "Even Awesomer Flick"
+  m.save
 end
 
 def can_update_using_update_method
   # Update movie title to "Wat, huh?"
   Movie.create(title: "Wat?")
-  __
-  __
+  id = Movie.where(title: "Wat?")
+  Movie.update(id,title: "Wat, huh?")
 end
 
 def can_update_multiple_items_at_once
@@ -77,26 +76,21 @@ def can_update_multiple_items_at_once
   5.times do |i|
     Movie.create(title: "Movie_#{i}", release_date: 2000+i)
   end
-  __
+  ha = {}
+  5.times do |i|
+    ha[i+1]={title: "A Movie"}
+  end
+  Movie.update(ha.keys,ha.values)
 end
 
 def can_destroy_a_single_item
   Movie.create(title: "That One Where the Guy Kicks Another Guy Once")
-  __
-  __
+  Movie.delete(Movie.where(title: "That One Where the Guy Kicks Another Guy Once"))
 end
 
 def can_destroy_all_items_at_once
   10.times do |i|
     Movie.create(title: "Movie_#{i}")
   end
-  __
+  Movie.delete([1,2,3,4,5,6,7,8,9,10])
 end
-
-
-
-
-
-
-
-
